@@ -1,0 +1,22 @@
+
+Forgot ts config file
+ 
+ 
+ 
+ # Position Class:
+
+ Position = {
+     rank: "A-H"  <--- can be very explicit in these types
+     file: 1-8  <--- can be very explicit in these types
+
+     distanceFrom = ([string, number]) // e.g C, 3 //  => {
+         calculates distance from currentPosition to givenPosition 
+         returns object representing distance 
+         // {file: -1, rank: 1}
+     }
+ }
+
+
+ # Piece Class
+
+ abstract Class
