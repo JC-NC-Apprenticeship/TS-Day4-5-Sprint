@@ -1,30 +1,17 @@
-import { FilePosition, RankPosition, PieceColour } from '../lookup-types';
-import Position from '../positions/positionClass';
-import Piece from './pieceClass';
+import { Piece, ColourType } from './piece';
+import { FileType, RankType, Position } from '../position';
 
 class Rook extends Piece {
-	// Is this missing something to do with captured I think.
+  constructor(file: FileType, rank: RankType, colour: ColourType) {
+    super(file, rank, colour);
+  }
 
-	constructor(
-		pieceColour: PieceColour,
-		pieceFile: FilePosition,
-		pieceRank: RankPosition
-	) {
-		super(pieceColour, pieceFile, pieceRank);
-	}
+  canMoveTo(position: Position): boolean {
+    const { file, rank } = this.position.distanceFrom(position);
 
-	canMoveTo(file: FilePosition, rank: RankPosition): boolean {
-		if (file === this.currentPosition.file) {
-		}
-		// if file === this.pieceFile : true
-		//
-		return true;
-	}
-	// option one same rank different file
-	// option 2 different rank same file
-	// anything else is false
+    if (file === 0 || rank === 0) return true;
+    return false;
+  }
 }
 
-const newRook = new Rook('Black', 'A', 1);
-
-console.log(newRook);
+export { Rook };

@@ -1,36 +1,49 @@
-import { FilePosition, RankPosition, PieceColour } from '../lookup-types';
-import Piece from './pieceClass';
+import { Piece, ColourType } from './piece';
+import { FileType, RankType, Position } from '../position';
 
 class Pawn extends Piece {
-	// This is to determine if the pawn has been moved
-	hasMoved: boolean = false;
+  private hasMoved: boolean;
 
-	constructor(
-		pieceColour: PieceColour,
-		pieceFile: FilePosition,
-		pieceRank: RankPosition
-	) {
-		super(pieceColour, pieceFile, pieceRank);
-	}
+  constructor(file: FileType, rank: RankType, colour: ColourType) {
+    super(file, rank, colour);
+    this.hasMoved = false;
+  }
 
-	// setMove () {
-	//     if(!this.hasMoved) {
-	//         this.canMoveTo () {
+  canMoveTo(position: Position, isCapturing?: boolean): boolean {
+    const { file, rank } = this.position.distanceFrom(position);
 
-	//         }
-	//         this.hasMoved = true
-	//     } else {
-	//         this.canMoveTo () {
-	//            this.currentPosition.distanceFrom('A',2)
-	//         }
-	//     }
-	// }
+    if (Math.abs(file) === 1 && Math.abs(rank) === 1 && isCapturing)
+      return true;
 
-	canMoveTo() {
-		return true;
-	}
+    if (file !== 0) return false;
+
+    let validRankMove: number;
+    if (this.hasMoved) validRankMove = 1;
+    else validRankMove = 2;
+
+    if (!this.hasMoved) {
+      if (
+        (this.colour === 'black' && rank === -validRankMove) ||
+        (this.colour === 'black' && rank === -validRankMove + 1)
+      )
+        return true;
+      else if (
+        (this.colour === 'white' && rank === validRankMove) ||
+        (this.colour === 'white' && rank === validRankMove - 1)
+      )
+        return true;
+      return false;
+    } else {
+      if (this.colour === 'black' && rank === -validRankMove) return true;
+      else if (this.colour === 'white' && rank === validRankMove) return true;
+      return false;
+    }
+  }
+
+  moveTo(newPosition: Position): void {
+    this.position = newPosition;
+    this.hasMoved = true;
+  }
 }
 
-const newPawn = new Pawn('Black', 'A', 1);
-
-console.log(newPawn);
+export { Pawn };
